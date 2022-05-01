@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap')
+@import "variables"
+
+.header-wrapper
+  position: absolute
+  width: 100%
+  top: 0
+  left: 0
+
+header
+  background: #fff
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 8px 30px -12px rgba(0, 0, 0, 0.12)
+  box-sizing: border-box
+  display: flex
+  height: 60px
+  width: 100vw
+  left: 0
+  padding: 0 15px
+  position: fixed
+
+  .logo
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 5px
+    font-family: 'Roboto Slab', serif
+
+    &-link
+      height: 50px
+      width: 50px
+
+    &-name
+      margin: 5px 5px 5px 10px
+
+    &-title
+      font-size: 15px
+
+    &-subtitle
+      font-size: 11px
+
+    &-title, &-subtitle
+      display: block
+      font-weight: 600
+
+  .search
+    width: calc(100% - 198px)
+    text-align: center
+    display: flex
+    align-items: center
+    justify-content: center
+
+#search
+  width: 500px
+
+  .search-wrapper
+    height: 40px
+    display: flex
+    justify-content: center
+    padding-right: 0
+    box-sizing: border-box
+    border: $border
+    border-radius: 4px
+
+    input
+      width: 100%
+      padding: 4px 8px
+      margin: 0
+      line-height: 30px
+      box-sizing: border-box
+      font-size: 16px
+      letter-spacing: -.02em
+      background: none
+      border: none
+
+      &:focus-visible
+        outline: none
+
+    button
+      width: 40px
+      background: $color-bg
+      border: none
+      color: #fff
+      border-radius: 0 4px 4px 0
+      cursor: pointer
+      margin: -1px -1px -1px 0
+
+      &:hover
+        background: $color-bg-hover

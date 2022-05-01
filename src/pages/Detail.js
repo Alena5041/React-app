@@ -1,10 +1,46 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import {useParams} from "react-router-dom";
 
-export default class Detail extends  Component {
+const Detail = () => {
+    const {id} = useParams();
+    const [elephants, setElephants] = useState([]);
+    const elephant = elephants[id];
 
-    render() {
-        return (
-            <div><h1>TATAT</h1></div>
-        )
-    }
+    useEffect(() => {
+        fetch("/elephants")
+            .then(res => res.json())
+            .then(data => setElephants(data))
+    }, []);
+
+    return (
+        <div>
+            {elephant && (
+                <div className="detail">
+                    <div className="detail-image">
+                        <a key={elephant._id} className="detail-image-link" href={elephant.wikilink}>
+                            <img src={elephant.image} alt={elephant.name}/>
+                        </a>
+                    </div>
+                    <div className="detail-text">
+                        <a key={elephant._id} href={elephant.wikilink}>
+                            <h1>{elephant.name}</h1>
+                        </a>
+                        <ul className="detail-parameters">
+                            <li><span>Affiliation:</span> {elephant.affiliation}</li>
+                            <li><span>Species:</span> {elephant.species}</li>
+                            <li><span>Sex:</span> {elephant.sex}</li>
+                            <li><span>Fictional:</span> {elephant.fictional}</li>
+                            <li><span>Dob:</span> {elephant.dob}</li>
+                            <li><span>Dod:</span> {elephant.dod}</li>
+                        </ul>
+                        <p className="detail-description">
+                            {elephant.note}
+                        </p>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
 }
+
+export {Detail}

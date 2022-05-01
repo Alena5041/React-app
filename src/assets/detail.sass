@@ -1,0 +1,43 @@
+@import "variables"
+
+.detail
+  display: flex
+  align-items: center
+  margin-bottom: 10px
+  padding: 10px
+  border-radius: 4px
+  border: $border
+  background: #fff
+
+  &-image
+    margin: 10px
+
+    &-link
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 350px
+      max-width: 350px
+      height: 350px
+
+      img
+        max-width: 100%
+        max-height: 100%
+
+  &-text
+    margin: 10px
+
+    a
+      color: #000
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+
+  &-parameters
+    list-style-type: none
+    padding-left: 0
+    font-size: 16px
+    color: #a6a6a6
+
+  &-description
+    font-size: 16px

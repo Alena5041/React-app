@@ -1,0 +1,84 @@
+@import "variables"
+
+.content
+  display: flex
+  justify-content: center
+
+  .filters
+    width: 15%
+    margin: 20px 20px 0 0
+
+    .filter
+      margin-bottom: 30px
+
+      ul
+        list-style-type: none
+        padding-left: 0
+
+        li
+          margin-bottom: 10px
+
+          label
+            display: flex
+            align-items: center
+            span
+              margin-bottom: 0
+
+          input[type=checkbox]
+            position: relative
+            cursor: pointer
+            width: 20px
+            height: 20px
+            margin: 0 5px 0 0
+
+            &:before
+              content: ""
+              display: block
+              position: absolute
+              width: 16px
+              height: 16px
+              top: 0
+              left: 0
+              border: 2px solid $color-bg
+              border-radius: 3px
+              background-color: #fff
+
+            &:checked
+
+              &:after
+                content: ""
+                display: block
+                width: 5px
+                height: 10px
+                border: solid #fff
+                border-width: 0 2px 2px 0
+                -ms-transform: rotate(45deg)
+                transform: rotate(45deg)
+                position: absolute
+                top: 2px
+                left: 6px
+                background-color: $color-bg
+
+              &:before
+                background-color: $color-bg
+
+
+    h4
+      border-bottom: $border
+      padding-bottom: 10px
+      margin: 0 0 10px 0
+
+    &-button
+      background: $color-bg
+      color: #fff
+      border-radius: 4px
+      border: none
+      cursor: pointer
+      padding: 7px 12px
+      font-weight: bold
+
+      &:hover
+        background: $color-bg-hover
+
+  .cards
+    width: 85%
