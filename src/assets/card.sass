@@ -1,0 +1,46 @@
+@import "variables"
+
+.card
+  display: flex
+  align-items: center
+  margin-bottom: 10px
+  padding: 10px
+  border-radius: 4px
+  border: $border
+  background: #fff
+
+  .image
+    margin: 10px
+
+    .image-link
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 150px
+      max-width: 150px
+      height: 150px
+
+      img
+        max-width: 100%
+        max-height: 100%
+
+  .text
+    margin: 10px
+
+    a
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+
+      h3
+        margin: 0 0 10px
+        color: #000
+
+    .parameters
+      list-style-type: none
+      padding-left: 0
+      font-size: 14px
+      color: #a6a6a6
+
+    .description
+      font-size: 13px
