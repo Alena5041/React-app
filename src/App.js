@@ -4,7 +4,7 @@ import logo from "./elephant-logo.svg";
 import { Routes, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import {useState} from "react";
+import { useState } from "react";
 
 const App = () => {
 

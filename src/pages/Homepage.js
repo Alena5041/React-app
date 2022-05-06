@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Homepage = ({ name }) => {
 
     const [elephants, setElephants] = useState([]);
-    const [elephant, setElephant] = useState({});
     const [elephantsSex, setElephantsSex] = useState("")
     const [elephantsSpecies, setElephantsSpecies] = useState("")
     const [sexMale, setSexMale] = useState(false)
@@ -14,37 +13,28 @@ const Homepage = ({ name }) => {
 
     const changeSexMale = () => {
         setSexMale(!sexMale);
-        resetSpeciesFilter();
     }
 
     const changeSexFemale = () => {
         setSexFemale(!sexFemale);
-        resetSpeciesFilter();
-    }
-
-    const resetSexFilter = () => {
-        setSexMale(false);
-        setSexFemale(false);
-        setElephantsSex("");
     }
 
     const changeSpeciesAsian = () => {
         setSpeciesAsian(!speciesAsian);
-        resetSexFilter();
     }
 
     const changeSpeciesAfrican = () => {
         setSpeciesAfrican(!speciesAfrican);
-        resetSexFilter();
     }
 
-    const resetSpeciesFilter = () => {
-        setSpeciesAsian(false);
-        setSpeciesAfrican(false);
-        setElephantsSpecies("");
-    }
-
-    const filterSex = () => {
+    const submitFilter = () => {
+        if (speciesAsian && !speciesAfrican) {
+            setElephantsSpecies("Asian");
+        } else if (speciesAfrican && !speciesAsian) {
+            setElephantsSpecies("African");
+        } else if ((speciesAsian && speciesAfrican) || (!speciesAsian && !speciesAfrican)) {
+            setElephantsSpecies("");
+        }
         if (sexMale && !sexFemale) {
             setElephantsSex("Male");
         } else if (sexFemale && !sexMale) {
@@ -54,15 +44,22 @@ const Homepage = ({ name }) => {
         }
     };
 
-    const filterSpecies = () => {
-        if (speciesAsian && !speciesAfrican) {
-            setElephantsSpecies("Asian");
-        } else if (speciesAfrican && !speciesAsian) {
-            setElephantsSpecies("African");
-        } else if ((speciesAsian && speciesAfrican) || (!speciesAsian && !speciesAfrican)) {
-            setElephantsSpecies("");
-        }
-    };
+    const resetFilter = () => {
+        resetSexFilter();
+        resetSpeciesFilter();
+    }
+
+    const resetSexFilter = () => {
+        setSexMale(false);
+        setSexFemale(false);
+        setElephantsSex("");
+    }
+
+    const resetSpeciesFilter = () => {
+        setSpeciesAsian(false);
+        setSpeciesAfrican(false);
+        setElephantsSpecies("");
+    }
 
     const Checkbox = ({ label, value, onChange }) => {
         return (
@@ -74,24 +71,23 @@ const Homepage = ({ name }) => {
     };
 
     useEffect(() => {
-        if (name) {
-            fetch(`/elephants/name/${name}`)
-            .then(res => res.json())
-            .then(data => setElephant(data))
-        } else if (elephantsSex) {
-            fetch(`/elephants/sex/${elephantsSex}`)
-                .then(res => res.json())
-                .then(data => setElephants(data))
-        } else if (elephantsSpecies) {
-            fetch(`/elephants/species/${elephantsSpecies}`)
-                .then(res => res.json())
-                .then(data => setElephants(data))
-        } else {
-            fetch("/elephants")
-            .then(res => res.json())
-            .then(data => setElephants(data))
-        }
+        fetch("/elephants")
+        .then(res => res.json())
+        .then(data => setElephants(data))
     }, [name, elephantsSex, elephantsSpecies]);
+
+    const checkFilter = (e) => {
+        const id = e.index;
+        if ((id && e.sex === elephantsSex && e.species === elephantsSpecies) ||
+            (id && e.sex === elephantsSex && elephantsSpecies === "") ||
+            (id && elephantsSex === "" && e.species === elephantsSpecies) ||
+            (id && elephantsSex === "" && elephantsSpecies === ""))
+        {
+            return true;
+        }
+    };
+
+    const sortedElephants = elephants.filter(checkFilter);
 
     return (
         <div className="content">
@@ -114,7 +110,6 @@ const Homepage = ({ name }) => {
                             />
                         </li>
                     </ul>
-                    <button className="filters-button" onClick={filterSex}>Filter by sex</button>
                 </div>
                 <div className="filter">
                     <h4>Species</h4>
@@ -134,60 +129,35 @@ const Homepage = ({ name }) => {
                             />
                         </li>
                     </ul>
-                    <button className="filters-button" onClick={filterSpecies}>Filter by species</button>
                 </div>
+                <button className="filters-button" onClick={submitFilter}>Apply filter</button>
+                <button className="filters-button" onClick={resetFilter}>Reset filter</button>
             </div>
             <div className="cards">
-                {name.length > 0 && (
-                    <article className="card" key={elephant._id} >
-                        <div className="image">
-                            <div className="image-link">
-                                <img src={elephant.image} alt={elephant.name}/>
+                {sortedElephants.map((elephant) => {
+                    return (
+                        <article className="card" key={elephant._id} >
+                            <div className="image">
+                                <Link key={elephant._id} className="image-link" to={`/detail/${elephant._id}`}>
+                                    <img src={elephant.image} alt={elephant.name}/>
+                                </Link>
                             </div>
-                        </div>
-                        <div className="text">
-                            <h3>{elephant.name}</h3>
-                            <ul className="parameters">
-                                <li><span>Affiliation:</span> {elephant.affiliation}</li>
-                                <li><span>Species:</span> {elephant.species}</li>
-                                <li><span>Sex:</span> {elephant.sex}</li>
-                            </ul>
-                            <p className="description">
-                                {elephant.note}
-                            </p>
-                        </div>
-                    </article>
-                )}
-                {name.length === 0 && (
-                    // eslint-disable-next-line array-callback-return
-                    elephants.map((elephant, index) => {
-                        if(elephant.index) { return (
-
-                            <article className="card" key={elephant._id} >
-                                <div className="image">
-                                    <Link key={elephant._id} className="image-link" to={`/detail/${index}`}>
-                                        <img src={elephant.image} alt={elephant.name}/>
-                                    </Link>
-                                </div>
-                                <div className="text">
-                                    <Link key={elephant._id} to={`/detail/${index}`}>
-                                        <h3>{elephant.name}</h3>
-                                    </Link>
-                                    <ul className="parameters">
-                                        <li><span>Affiliation:</span> {elephant.affiliation}</li>
-                                        <li><span>Species:</span> {elephant.species}</li>
-                                        <li><span>Sex:</span> {elephant.sex}</li>
-                                    </ul>
-                                    <p className="description">
-                                        {elephant.note}
-                                    </p>
-                                </div>
-                            </article>
-                        )} else {
-                            return false
-                        }
-                    })
-                )}
+                            <div className="text">
+                                <Link key={elephant._id} to={`/detail/${elephant._id}`}>
+                                    <h3>{elephant.name}</h3>
+                                </Link>
+                                <ul className="parameters">
+                                    <li><span>Affiliation:</span> {elephant.affiliation}</li>
+                                    <li><span>Species:</span> {elephant.species}</li>
+                                    <li><span>Sex:</span> {elephant.sex}</li>
+                                </ul>
+                                <p className="description">
+                                    {elephant.note}
+                                </p>
+                            </div>
+                        </article>
+                    )
+                })}
             </div>
         </div>
     )
